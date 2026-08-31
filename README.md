@@ -34,6 +34,7 @@ A complete full-stack inventory management application featuring a RESTful ASP.N
 - MS SQL Server / SSMS
 
 ### 2. Backend Setup
+
 ```bash
 cd backend
 # Update appsettings.json ConnectionString for your SQL Server
@@ -49,5 +50,15 @@ cd frontend
 npm install
 ng serve -o
 Angular 
+```
+### SCREEN SHOTS
+<img width="513" height="511" alt="1" src="https://github.com/user-attachments/assets/e80145a8-5fe0-4113-b4a6-94e0a2921fe9" />
+
+<img width="1366" height="571" alt="2" src="https://github.com/user-attachments/assets/93968de4-6d12-425c-933c-bd896c1e7c79" />
+
+<img width="1366" height="580" alt="3" src="https://github.com/user-attachments/assets/1fe9bc27-3245-4649-aff2-517800a3c79e" />
+
+<img width="1353" height="587" alt="4" src="https://github.com/user-attachments/assets/41748861-2197-435d-b0af-ce50d1521e59" />
+
 
 
