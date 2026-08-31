@@ -1,0 +1,24 @@
+ims-frontend/
+├── node_modules/               # Tamam installed libraries (Angular, Bootstrap, RxJS, etc.)
+├── src/                        # Project ka main Source Code
+│   ├── app/                    # Main Application Module & Components
+│   │   ├── components/         # AAP KE CUSTOM UI COMPONENTS
+│   │   │   └── products/       # Products Component (HTML, CSS, TS, Spec)
+│   │   ├── models/             # Data Interfaces / Types
+│   │   │   └── product.model.ts# Product Data Structure Model
+│   │   ├── services/           # Business Logic & API Calling Services
+│   │   │   └── product.service.ts # HTTP API Requests Handler
+│   │   ├── app-routing.module.ts # Page Routing / URLs Configuration
+│   │   ├── app.component.*     # Root Component (Main Application Shell)
+│   │   └── app.module.ts       # Root Module (Central Registry of App)
+│   ├── assets/                 # Images, Icons, Static Files
+│   ├── environments/           # Development & Production API Base URLs
+│   ├── favicon.ico             # Browser Tab Icon
+│   ├── index.html              # Main Single Page (SPA) HTML Shell
+│   ├── main.ts                 # Application Entry Point
+│   ├── polyfills.ts            # Cross-browser Compatibility Scripts
+│   └── styles.css              # Global CSS Styles (Bootstrap Imports)
+├── angular.json                # Angular CLI Build & Project Configuration
+├── package.json                # Project Dependencies & Scripts List
+├── tsconfig.json               # TypeScript Compiler Settings
+└── README.md                   # Project Documentation

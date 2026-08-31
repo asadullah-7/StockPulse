@@ -1,0 +1,12 @@
+# Visual Studio / .NET Core Junk
+**/bin/
+**/obj/
+**/.vs/
+**/*.user
+**/appsettings.Development.json
+
+# Angular / Node Junk
+**/node_modules/
+**/dist/
+**/.angular/
+**/.vscode/

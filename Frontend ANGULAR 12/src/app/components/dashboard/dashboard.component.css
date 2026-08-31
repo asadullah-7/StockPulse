@@ -1,0 +1,116 @@
+:host {
+  display: block;
+  color: #f1f5f9;
+}
+
+/* Page Background Glow */
+.dashboard-container {
+  background-color: #0b0f19;
+  min-height: 100vh;
+}
+
+/* Refresh Button */
+.btn-refresh {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.btn-refresh:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+/* Stat Cards */
+.stat-card {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-title {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.stat-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card Accent Borders */
+.card-revenue { border-left: 4px solid #0d6efd; }
+.card-orders { border-left: 4px solid #198754; }
+.card-products { border-left: 4px solid #0dcaf0; }
+.card-customers { border-left: 4px solid #ffc107; }
+.card-suppliers { border-left: 4px solid #6c757d; }
+.card-alert { border-left: 4px solid #dc3545; }
+  /* background: rgba(220, 53, 69, 0.12); 
+} */
+
+/* Card Alert Text Fix */
+.card-alert .stat-title { color: #f87171 !important; }
+.card-alert .stat-value { color: #ef4444 !important; }
+
+/* Table Section Fixes */
+.custom-card {
+  background: #0f172a !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.custom-table {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+.custom-table thead tr {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.custom-table th {
+  color: #94a3b8 !important;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  padding: 1rem 1rem;
+  background-color: transparent !important;
+}
+
+.custom-table td {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  background-color: transparent !important;
+  color: #e2e8f0 !important;
+}
+
+.custom-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #38bdf8;
+}
+
+.text-emerald {
+  color: #10b981 !important;
+}

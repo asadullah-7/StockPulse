@@ -1,0 +1,207 @@
+<!-- AREA 1: TABLE VIEW (showListArea = true) -->
+<div class="table-area" *ngIf="showListArea">
+  <div class="container-fluid py-4">
+    
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-dark-subtle">
+      <div>
+        <h2 class="fw-extrabold text-white mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-box-seam-fill text-info fs-3"></i> Products Management
+        </h2>
+        <p class="text-white-50 mb-0 small mt-1">Manage, track, and update inventory stock items</p>
+      </div>
+      <button class="btn btn-action-primary fw-bold d-flex align-items-center gap-2 px-3 py-2" (click)="navigateToAdd()">
+        <i class="bi bi-plus-lg fs-6"></i> Add New Product
+      </button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="text-center py-5 my-5">
+      <div class="spinner-border text-info" style="width: 3rem; height: 3rem;" role="status"></div>
+      <p class="mt-3 text-light fw-medium">Products are loading...</p>
+    </div>
+
+    <!-- Table Card -->
+    <div *ngIf="!isLoading" class="custom-card card rounded-4 border-0">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table custom-table align-middle mb-0">
+            <thead>
+              <tr>
+                <th class="ps-4">ID</th>
+                <th>PRODUCT NAME</th>
+                <th>PRICE</th>
+                <th>STOCK LEVEL</th>
+                <th class="text-center pe-4">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of products">
+                <td class="ps-4 fw-bold text-info">#{{ p.pid || p.PID || p.id }}</td>
+                <td class="fw-medium text-white">{{ p.name || p.Name }}</td>
+                <td class="fw-bold text-emerald">Rs. {{ p.price || p.Price | number:'1.2-2' }}</td>
+                <td>
+                  <span class="badge badge-stock px-3 py-2" 
+                        [class.bg-danger-subtle]="(p.qtyInStock || p.QtyInStock) <= (p.reOrderThreshold || p.ReOrderThreshold || 5)"
+                        [class.text-danger]="(p.qtyInStock || p.QtyInStock) <= (p.reOrderThreshold || p.ReOrderThreshold || 5)"
+                        [class.bg-success-subtle]="(p.qtyInStock || p.QtyInStock) > (p.reOrderThreshold || p.ReOrderThreshold || 5)"
+                        [class.text-success]="(p.qtyInStock || p.QtyInStock) > (p.reOrderThreshold || p.ReOrderThreshold || 5)">
+                    <i class="bi bi-box-seam me-1"></i> {{ p.qtyInStock || p.QtyInStock }} Units
+                  </span>
+                </td>
+                <td class="text-center pe-4">
+                  <div class="d-flex align-items-center justify-content-center gap-2">
+                    <button class="btn btn-action-warning btn-sm d-flex align-items-center gap-1" (click)="navigateToEdit(p)">
+                      <i class="bi bi-pencil-square"></i> Edit
+                    </button>
+                    <button class="btn btn-action-danger btn-sm d-flex align-items-center gap-1" (click)="onDeleteProduct(p)">
+                      <i class="bi bi-trash3-fill"></i> Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="products.length === 0">
+                <td colspan="5" class="text-center text-white-50 py-5">
+                  <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
+                  Product not found. 📭
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AREA 2: FORM VIEW (showListArea = false) -->
+<div class="form-area" *ngIf="!showListArea">
+  <div class="container-fluid py-4 px-md-5">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        
+        <!-- Heading & Back Button -->
+        <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-dark-subtle">
+          <div>
+            <h3 class="fw-bold text-white mb-0 d-flex align-items-center gap-2">
+              <i class="bi" [class.bi-pencil-square]="isEditMode" [class.bi-plus-circle-fill]="!isEditMode" class="text-info"></i>
+              {{ isEditMode ? 'Edit Product' : 'Add New Product' }}
+            </h3>
+            <p class="text-white-50 mb-0 small mt-1">Fill in the product details below</p>
+          </div>
+          <button class="btn btn-refresh btn-sm fw-semibold d-flex align-items-center gap-2 px-3 py-2" (click)="goBackToList()">
+            <i class="bi bi-arrow-left"></i> Back to List
+          </button>
+        </div>
+
+        <!-- Form Card -->
+        <div class="custom-card card rounded-4 border-0">
+          <div class="card-body p-4 p-md-5">
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+              <!-- ROW 1: Product Name, Category, Brand -->
+              <div class="row g-3 mb-3">
+                <div class="col-lg-4 col-md-6">
+                  <label class="form-label custom-label">Product Name *</label>
+                  <input 
+                    type="text" 
+                    formControlName="Name" 
+                    class="form-control custom-input" 
+                    [class.is-invalid]="productForm.get('Name')?.touched && productForm.get('Name')?.invalid"
+                    placeholder="e.g. Wireless Mouse">
+                  <div class="invalid-feedback">Product name is required (min 2 characters).</div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <label class="form-label custom-label">Category *</label>
+                  <select 
+                    formControlName="CatID" 
+                    class="form-select custom-input" 
+                    [class.is-invalid]="productForm.get('CatID')?.touched && productForm.get('CatID')?.invalid">
+                    <option [ngValue]="null" disabled>Select Category</option>
+                    <option 
+                      *ngFor="let c of categories" 
+                      [ngValue]="c.catID ?? c.CatID ?? c.id">
+                      {{ c.catName ?? c.CatName ?? c.name }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">Please select a category.</div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <label class="form-label custom-label">Brand *</label>
+                  <select 
+                    formControlName="BrandID" 
+                    class="form-select custom-input" 
+                    [class.is-invalid]="productForm.get('BrandID')?.touched && productForm.get('BrandID')?.invalid">
+                    <option [ngValue]="null" disabled>Select Brand</option>
+                    <option 
+                      *ngFor="let b of brands" 
+                      [ngValue]="b.brandID ?? b.BrandID ?? b.id">
+                      {{ b.name ?? b.Name ?? b.brandName }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback">Please select a brand.</div>
+                </div>
+              </div>
+
+              <!-- ROW 2: Price, Stock Quantity, Reorder Threshold -->
+              <div class="row g-3 mb-4">
+                <div class="col-lg-4 col-md-6">
+                  <label class="form-label custom-label">Price (PKR) *</label>
+                  <input 
+                    type="number" 
+                    formControlName="Price" 
+                    class="form-control custom-input" 
+                    [class.is-invalid]="productForm.get('Price')?.touched && productForm.get('Price')?.invalid"
+                    placeholder="0.00">
+                  <div class="invalid-feedback">Valid price is required (greater than 0).</div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <label class="form-label custom-label">Stock Quantity *</label>
+                  <input 
+                    type="number" 
+                    formControlName="QtyInStock" 
+                    class="form-control custom-input" 
+                    [class.is-invalid]="productForm.get('QtyInStock')?.touched && productForm.get('QtyInStock')?.invalid"
+                    placeholder="0">
+                  <div class="invalid-feedback">Quantity cannot be negative.</div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                  <label class="form-label custom-label">Reorder Threshold</label>
+                  <input 
+                    type="number" 
+                    formControlName="ReOrderThreshold" 
+                    class="form-control custom-input" 
+                    [class.is-invalid]="productForm.get('ReOrderThreshold')?.touched && productForm.get('ReOrderThreshold')?.invalid"
+                    placeholder="5">
+                  <small class="text-white-50 d-block mt-1">At this qty low stock alert will be triggered.</small>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex justify-content-end gap-2 border-top border-dark-subtle pt-4 mt-2">
+                <button type="button" class="btn btn-refresh fw-semibold px-4" (click)="goBackToList()">
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  class="btn fw-bold px-5" 
+                  [class.btn-action-warning]="isEditMode" 
+                  [class.btn-action-primary]="!isEditMode" 
+                  [disabled]="isSubmitting">
+                  <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+                  {{ isEditMode ? 'Update Product' : 'Save Product' }}
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

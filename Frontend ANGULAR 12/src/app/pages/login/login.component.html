@@ -1,0 +1,51 @@
+<div class="login-wrapper d-flex align-items-center justify-content-center min-vh-100 bg-light">
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 420px; width: 100%;">
+    <div class="card-header bg-gradient bg-primary text-white text-center py-4 border-0">
+      <div class="mb-2 fs-1">📦</div>
+      <h3 class="fw-bold mb-1"><span class="text-light fw-bold">Stock</span><span class="text-primary fw-bold">Pulse</span></h3>
+      <p class="text-white-50 small mb-0">Inventory Management System</p>
+    </div>
+    
+    <div class="card-body p-4 p-sm-5">
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+        <div class="form-floating mb-3">
+          <input 
+            type="text" 
+            class="form-control" 
+            id="userName"
+            placeholder="Username" 
+            [(ngModel)]="loginModel.userName" 
+            name="userName" 
+            required 
+            #userName="ngModel">
+          <label for="userName">👤 Username</label>
+        </div>
+
+        <div class="form-floating mb-4">
+          <input 
+            type="password" 
+            class="form-control" 
+            id="password"
+            placeholder="Password" 
+            [(ngModel)]="loginModel.password" 
+            name="password" 
+            required 
+            #password="ngModel">
+          <label for="password">🔒 Password</label>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn-primary btn-lg w-100 rounded-3 fw-bold shadow-sm py-3"
+          [disabled]="!loginForm.valid || isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          <span>{{ isLoading ? 'Signing In...' : 'Sign In 🚀' }}</span>
+        </button>
+      </form>
+    </div>
+    
+    <div class="card-footer bg-white text-center py-3 border-0">
+      <small class="text-muted">Protected Access • IMS © 2026</small>
+    </div>
+  </div>
+</div>

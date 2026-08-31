@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+/* FORCE DARK THEME ON WHOLE APPLICATION */
+html, body {
+  background-color: #0b0f19 !important;
+  color: #f1f5f9 !important;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fix Bootstrap Container Light Bleed */
+.container, .container-fluid {
+  background-color: transparent !important;
+}
+
+/* Global Scrollbar Dark Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}

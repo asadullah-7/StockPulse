@@ -1,0 +1,172 @@
+<div class="container-fluid py-4">
+  <div class="row g-4">
+    
+    <!-- LEFT COLUMN: Create Order Section -->
+    <div class="col-lg-7">
+      <div class="custom-card card rounded-4 border-0 h-100">
+        <div class="card-header bg-transparent border-bottom border-dark-subtle py-3 px-4">
+          <h5 class="card-title mb-0 fw-bold text-white d-flex align-items-center gap-2">
+            <i class="bi bi-cart-plus-fill text-info fs-4"></i> Create New Order 🛒
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          
+          <!-- Customer Selection Dropdown -->
+          <div class="mb-4">
+            <label class="form-label custom-label">Select Customer 👤</label>
+            <select class="form-select custom-input form-select-lg" [(ngModel)]="selectedCustomerId">
+              <option [ngValue]="null">-- Choose Customer --</option>
+              <option *ngFor="let c of customers" [ngValue]="c.custID ?? c.CustID ?? c.id">
+                {{ c.name || c.Name || c.custName || 'Customer #' + (c.custID ?? c.CustID ?? c.id) }}
+              </option>
+            </select>
+          </div>
+
+          <hr class="my-4 border-secondary opacity-25">
+
+          <!-- Product Add to Cart Section -->
+          <div class="row g-3 align-items-end mb-4">
+            <div class="col-md-6">
+              <label class="form-label custom-label">Select Product 📦</label>
+              <select class="form-select custom-input" [(ngModel)]="selectedProduct">
+                <option [ngValue]="null">-- Choose Product --</option>
+                <option *ngFor="let p of products" [ngValue]="p">
+                  {{ p.name || p.Name }} (Stock: {{ p.qtyInStock ?? p.QtyInStock }} | Price: Rs. {{ p.price || p.Price }})
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label custom-label">Quantity 🔢</label>
+              <input type="number" class="form-control custom-input text-center" min="1" [(ngModel)]="inputQuantity">
+            </div>
+
+            <div class="col-md-3">
+              <button class="btn btn-action-success w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-1" (click)="addToCart()">
+                <i class="bi bi-plus-lg"></i> Add Item
+              </button>
+            </div>
+          </div>
+
+          <!-- Cart Items Table -->
+          <div class="table-responsive rounded-3 border border-dark-subtle mb-4">
+            <table class="table custom-table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th class="ps-3">PRODUCT</th>
+                  <th class="text-center" style="width: 130px;">PRICE</th>
+                  <th class="text-center" style="width: 120px;">QTY</th>
+                  <th class="text-end" style="width: 140px;">SUBTOTAL</th>
+                  <th class="text-center" style="width: 80px;">ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of cart; let i = index">
+                  <td class="ps-3 fw-semibold text-white">{{ item.productName }}</td>
+                  <td class="text-center text-white-50">Rs. {{ item.price | number:'1.2-2' }}</td>
+                  <td class="text-center">
+                    <input type="number" class="form-control form-control-sm text-center custom-input mx-auto" style="max-width: 80px;"
+                           [ngModel]="item.quantity" 
+                           (ngModelChange)="updateItemQty(i, $event)" min="1">
+                  </td>
+                  <td class="text-end fw-bold text-info">Rs. {{ item.subTotal | number:'1.2-2' }}</td>
+                  <td class="text-center">
+                    <button class="btn btn-action-danger btn-sm rounded-circle p-1 px-2" (click)="removeItem(i)" title="Remove Item">
+                      <i class="bi bi-trash3-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="cart.length === 0">
+                  <td colspan="5" class="text-center text-white-50 py-4">
+                    <i class="bi bi-cart-x fs-3 d-block mb-1 text-secondary"></i>
+                    Cart is Empty Please add products. 🛒
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Total & Submit Order -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center bg-dark-subtle p-3 rounded-4 border border-dark-subtle gap-3">
+            <div>
+              <span class="fs-6 text-white-50 me-2">Grand Total:</span>
+              <span class="fs-3 fw-bolder text-success">Rs. {{ grandTotal | number:'1.2-2' }}</span>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-refresh fw-semibold px-3" (click)="clearCart()" [disabled]="cart.length === 0">
+                Clear Cart
+              </button>
+              <button class="btn btn-action-primary fw-bold px-4" 
+                      (click)="submitOrder()" 
+                      [disabled]="cart.length === 0 || isSubmitting || !selectedCustomerId">
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                Submit Order 🚀
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Recent Orders Grid Section -->
+    <div class="col-lg-5">
+      <div class="custom-card card rounded-4 border-0 h-100">
+        <div class="card-header bg-transparent border-bottom border-dark-subtle py-3 px-4 d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0 fw-bold text-white d-flex align-items-center gap-2">
+            <i class="bi bi-clock-history text-info fs-4"></i> Recent Orders 📋
+          </h5>
+          <button class="btn btn-refresh btn-sm fw-semibold d-flex align-items-center gap-1" (click)="fetchAllData()">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+          </button>
+        </div>
+        <div class="card-body p-0">
+          
+          <div class="table-responsive" style="max-height: 550px; overflow-y: auto;">
+            <table class="table custom-table align-middle mb-0">
+              <thead class="sticky-top" style="background-color: #0f172a;">
+                <tr>
+                  <th class="ps-4">ORDER #</th>
+                  <th>CUSTOMER</th>
+                  <th class="text-end">AMOUNT</th>
+                  <th class="text-center pe-4">ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ord of recentOrders">
+                  <td class="ps-4 fw-bold text-info">#{{ ord.orderID }}</td>
+                  <td>
+                    <span class="fw-semibold text-white d-block">
+                      {{ ord.customerName }}
+                    </span>
+                    <small class="text-white-50" *ngIf="ord.orderDate">
+                      {{ ord.orderDate | date:'short' }}
+                    </small>
+                  </td>
+                  <td class="text-end fw-bold text-success">
+                    Rs. {{ ord.totalAmount | number:'1.2-2' }}
+                  </td>
+                  <td class="text-center pe-4">
+                    <button class="btn btn-action-danger btn-sm" 
+                            (click)="deleteOrder(ord.orderID)" 
+                            title="Cancel Order & Restore Stock">
+                      <i class="bi bi-trash3-fill"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="recentOrders.length === 0">
+                  <td colspan="4" class="text-center text-white-50 py-5">
+                    <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
+                    Koi recent order maujood nahi hai. 📭
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

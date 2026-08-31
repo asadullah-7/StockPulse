@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand text-light" routerLink="/dashboard">
+      <span class="fw-bold">📦 Stock</span><span class="text-primary fw-bold">Pulse</span><br>
+      <span class="text-light mb-lg-0 small">Inventory Management System</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/products" routerLinkActive="active">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/categories" routerLinkActive="active">Categories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/brands" routerLinkActive="active">Brands</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/customers" routerLinkActive="active">Customers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/suppliers" routerLinkActive="active">Suppliers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/orders" routerLinkActive="active">Orders</a>
+        </li>
+        
+        <!-- Users Management Option -->
+        <li class="nav-item" *ngIf="isAdmin">
+          <a class="nav-link text-light " routerLink="/users" routerLinkActive="active">
+            Users Management
+          </a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <span class="text-light small" *ngIf="currentUser">
+          👤 {{ currentUser.userName || currentUser.username || 'User' }}
+        </span>
+        <button class="btn btn-danger btn-sm" (click)="onLogout()">
+          Logout 🚪
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container mt-4">
+  <router-outlet></router-outlet>
+</div>

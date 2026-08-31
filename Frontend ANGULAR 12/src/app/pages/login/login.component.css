@@ -1,0 +1,16 @@
+.login-wrapper {
+  background: linear-gradient(135deg, #040008 0%, #158d8d 100%);
+}
+
+.card {
+  transition: transform 0.2s ease-in-out;
+ 
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.bg-gradient {
+  background: linear-gradient(45deg, #1e4f99, #0e1622) !important;
+}

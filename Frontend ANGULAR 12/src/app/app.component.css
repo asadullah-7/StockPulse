@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  background-color: #275e54 !important;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.custom-navbar {
+  background: #0f172a !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-icon-box {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+}
+
+.custom-nav-link {
+  color: #cbd5e1 !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.custom-nav-link:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.custom-nav-link.active {
+  color: #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}

@@ -1,0 +1,95 @@
+<div class="container-fluid py-4">
+  
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-dark-subtle">
+    <div>
+      <h2 class="fw-extrabold text-white mb-0 d-flex align-items-center gap-2">
+        <i class="bi bi-tags-fill text-info fs-3"></i> Categories Management 📁
+      </h2>
+      <p class="text-white-50 mb-0 small mt-1">Organize and structure your inventory categories</p>
+    </div>
+    <button class="btn btn-action-primary fw-bold d-flex align-items-center gap-2 px-3 py-2" (click)="openAddModal()" data-bs-toggle="modal" data-bs-target="#categoryModal">
+      <i class="bi bi-plus-lg fs-6"></i> Add Category
+    </button>
+  </div>
+
+  <!-- TABLE CARD -->
+  <div class="custom-card card rounded-4 border-0">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table custom-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th class="ps-4">ID</th>
+              <th>CATEGORY NAME</th>
+              <th class="text-center pe-4">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of categories">
+              <td class="ps-4 fw-bold text-info">#{{ c.catID ?? c.CatID }}</td>
+              <td class="fw-semibold text-white">{{ c.catName ?? c.CatName }}</td>
+              <td class="text-center pe-4">
+                <div class="d-flex align-items-center justify-content-center gap-2">
+                  <button class="btn btn-action-warning btn-sm d-flex align-items-center gap-1" (click)="openEditModal(c)" data-bs-toggle="modal" data-bs-target="#categoryModal">
+                    <i class="bi bi-pencil-square"></i> Edit
+                  </button>
+                  <button class="btn btn-action-danger btn-sm d-flex align-items-center gap-1" (click)="onDelete(c.catID ?? c.CatID, c.catName ?? c.CatName)">
+                    <i class="bi bi-trash3-fill"></i> Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="categories.length === 0">
+              <td colspan="3" class="text-center text-white-50 py-5">
+                <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
+                No categories found. 📭
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal fade" id="categoryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content custom-modal border-0 rounded-4">
+      <div class="modal-header border-bottom border-dark-subtle py-3 px-4" [ngClass]="isEditMode ? 'bg-warning-subtle text-warning' : 'bg-primary-subtle text-info'">
+        <h5 class="modal-title fw-bold d-flex align-items-center gap-2">
+          <i class="bi" [class.bi-pencil-square]="isEditMode" [class.bi-folder-plus]="!isEditMode"></i>
+          {{ isEditMode ? 'Edit Category' : 'Add Category' }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label custom-label">Category Name <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              formControlName="CatName" 
+              class="form-control custom-input" 
+              placeholder="e.g. Peripherals"
+              [ngClass]="{'is-invalid': categoryForm.get('CatName')?.touched && categoryForm.get('CatName')?.invalid}">
+            <div class="invalid-feedback">Category name is required.</div>
+          </div>
+        </div>
+        <div class="modal-footer border-top border-dark-subtle p-3">
+          <button type="button" class="btn btn-refresh fw-semibold px-4" data-bs-dismiss="modal">Cancel</button>
+          <button 
+            type="submit" 
+            class="btn fw-bold px-4" 
+            [class.btn-action-warning]="isEditMode" 
+            [class.btn-action-primary]="!isEditMode" 
+            [disabled]="categoryForm.invalid || isSubmitting">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
